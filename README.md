@@ -22,9 +22,10 @@ Version: alpha ; Developing...
 
 1. 表和字段的描述更新
 2. 命令行工具的代码内容优化和进度条显示
-3. 列表页面布局优化
+3. 列表页面布局优化,资源避免使用 googleapi 
 4. 页面添加同步字段按钮
 5. 提供显示删除的字段和表
+6. 提供英文版本和多语言支持
 
 ## Installation
 composer require zhuzhichao/laravel-db-dict
