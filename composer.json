@@ -1,0 +1,22 @@
+{
+    "name": "zhuzhichao/laravel-db-dict",
+    "description": "A Laravel db dict package",
+    "license": "MIT",
+    "keywords": ["db-dict", "laravel", "database", "dict"],
+    "authors": [
+        {
+            "name": "zhuzhichao",
+            "email": "me@zhuzhichao.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "5.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zhuzhichao\\LaravelDbDict\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
