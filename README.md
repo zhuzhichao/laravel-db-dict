@@ -27,8 +27,16 @@ Version: alpha ; Developing...
 5. 提供显示删除的字段和表
 6. 提供英文版本和多语言支持
 
+## Demo
+
+![laravel-db-dict-demo](http://7xkxib.com1.z0.glb.clouddn.com/laravel-db-dict-demo.png)
+
 ## Installation
 composer require zhuzhichao/laravel-db-dict
+
+add follow line into config/app.php>providers>array
+
+Zhuzhichao\LaravelDbDict\LavavelDbDictProvider::class
 
 php artisan vendor:publish
 
