@@ -42,6 +42,7 @@ class DbColumn extends Model
 
     public function getKeyAttribute($value)
     {
+        
         return $value ? $value : '';
     }
 }
