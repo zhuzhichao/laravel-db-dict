@@ -22,6 +22,10 @@ class DbColumn extends Model
         'description',
     ];
 
+    protected $casts = [
+        'is_nullable' => 'boolean'
+    ];
+
     protected $dates = [
         'deleted_at'
     ];
@@ -29,5 +33,15 @@ class DbColumn extends Model
     public function table()
     {
         return $this->belongsTo(DbTable::class);
+    }
+
+    public function getIsNullableAttribute($value)
+    {
+        return $value ? '<span class="label label-success">YES</span>' : '<span class="label label-warning">NO</span>';
+    }
+
+    public function getKeyAttribute($value)
+    {
+        return $value ? $value : '';
     }
 }

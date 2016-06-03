@@ -91,7 +91,7 @@
                             <td>{{ $column->type }}</td>
                             <td>{{ $column->default }}</td>
                             <td>{{ $column->key }}</td>
-                            <td>{{ $column->is_nullable }}</td>
+                            <td>{!! $column->is_nullable !!}</td>
                             <td>{{ $column->extra }}</td>
                             <td>{{ $column->comment }}</td>
                             <td>{{ $column->created_at }}</td>

@@ -105,8 +105,8 @@ order by t.table_schema, t.table_name, c.ordinal_position";
                         'name'        => $columnInfo->column_name,
                         'type'        => $columnInfo->column_type,
                         'default'     => $columnInfo->column_default,
-                        'key'         => $columnInfo->column_key == 'PRI' ? '主键' : ( $columnInfo->column_key == 'UNI' ? '唯一索引' : ( $columnInfo->column_key == 'MUL' ? '可重复索引' : null ) ),
-                        'is_nullable' => $columnInfo->is_nullable == 'YES' ? true : 'fasle',
+                        'key'         => $columnInfo->column_key,
+                        'is_nullable' => $columnInfo->is_nullable == 'YES' ? true : false,
                         'extra'       => $columnInfo->extra,
                         'comment'     => $columnInfo->column_comment,
                     ]);
@@ -115,8 +115,8 @@ order by t.table_schema, t.table_name, c.ordinal_position";
                         'name'        => $columnInfo->column_name,
                         'type'        => $columnInfo->column_type,
                         'default'     => $columnInfo->column_default,
-                        'key'         => $columnInfo->column_key == 'PRI' ? '主键' : ( $columnInfo->column_key == 'UNI' ? '唯一索引' : ( $columnInfo->column_key == 'MUL' ? '可重复索引' : null ) ),
-                        'is_nullable' => $columnInfo->is_nullable == 'YES' ? true : 'fasle',
+                        'key'         => $columnInfo->column_key,
+                        'is_nullable' => $columnInfo->is_nullable == 'YES' ? true : false,
                         'extra'       => $columnInfo->extra,
                         'comment'     => $columnInfo->column_comment,
                     ]);
