@@ -21,4 +21,18 @@ class DictController extends Controller
 
         return view('LarevelDbDict::index')->withTables($tables)->withColumns($columns);
     }
+
+    public function update($column_id)
+    {
+        /** @var DbColumn $column */
+        $column = DbColumn::find($column_id);
+
+        if (empty( $column )) {
+            return [ ];
+        }
+
+        $column->update([ 'description' => Request::input('description') ]);
+
+        return $column;
+    }
 }

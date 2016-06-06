@@ -3,9 +3,15 @@
 use Zhuzhichao\LaravelDbDict\Controllers\DictController;
 
 Route::group([
-    'prefix'     => 'laravel-db-dict',
-    //'middleware' => 'web',
-    //'middleware' => config('laravel-sms.middleware', 'web'),
+    'prefix' => 'laravel-db-dict',
+    'middleware' => 'web',
 ], function () {
-    Route::get('/', DictController::class.'@index');
+    Route::get('/', [
+        'uses' => DictController::class.'@index',
+        'as'   => 'db-dict::index'
+    ]);
+    Route::put('column/{id}', [
+        'uses' => DictController::class.'@update',
+        'as'   => 'db-dict::column.update'
+    ]);
 });

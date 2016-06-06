@@ -45,6 +45,21 @@
             background-color: #f5f5f5;
             border-color: #777;
         }
+
+        #table-dict .description {
+            padding: 0;
+        }
+
+        .description input {
+            padding-left: 5px;
+            padding-right: 5px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .description input.read-only {
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -68,7 +83,7 @@
                     Log file >50M, please download it.
                 </div>
             @else
-                <table id="table-log" class="table table-bordered table-hover" style="font-size: 12px;">
+                <table id="table-dict" class="table table-bordered table-hover" style="font-size: 12px;">
                     <thead>
                     <tr>
                         <th>字段名</th>
@@ -96,7 +111,10 @@
                             <td>{{ $column->comment }}</td>
                             <td>{{ $column->created_at }}</td>
                             <td>{{ $column->updated_at }}</td>
-                            <td>{{ $column->description }}</td>
+                            <td class="description">
+                                <input class="read-only" type="text" data-column_id="{{ $column->id }}"
+                                       value="{{ $column->description }}">
+                            </td>
 
                         </tr>
                     @endforeach
@@ -110,12 +128,13 @@
     </div>
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 <script>
     $(document).ready(function () {
-        $('#table-log').DataTable({
+        var $table = $('#table-dict');
+        $table.DataTable({
             "order"             : [1, 'desc'],
             "aLengthMenu"       : [25, 50, 100],
             "stateSave"         : true,
@@ -128,6 +147,21 @@
                 return data;
             }
         });
+
+        $('.description input').change(function () {
+            $.post('{{ route('db-dict::index') }}/column/' + $(this).data('column_id'), {
+                _method     : 'PUT',
+                _token      : '{{ csrf_token() }}',
+                description : $(this).val()
+            }, function (result) {
+                console.log(result);
+            });
+        }).keyup(function (event) {
+            if (event.keyCode == 13) {
+                $(this).blur();
+            }
+        });
+
         $('.table-container').on('click', '.expand', function () {
             $('#' + $(this).data('display')).toggle();
         });
