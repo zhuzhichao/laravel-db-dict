@@ -116,8 +116,8 @@
                         <th>是否为空</th>
                         <th>其他</th>
                         <th>字段备注</th>
-                        <th>同步</th>
-                        <th>更新</th>
+                        {{--<th>同步</th>--}}
+                        {{--<th>更新</th>--}}
                         <th>描述</th>
                     </tr>
                     </thead>
@@ -132,8 +132,8 @@
                             <td>{!! $column->is_nullable !!}</td>
                             <td>{{ $column->extra }}</td>
                             <td>{{ $column->comment }}</td>
-                            <td>{{ $column->created_at }}</td>
-                            <td>{{ $column->updated_at }}</td>
+{{--                            <td>{{ $column->created_at }}</td>--}}
+                            {{--<td>{{ $column->updated_at }}</td>--}}
                             <td class="description">
                                 <input type="text" data-column_id="{{ $column->id }}"
                                        placeholder="点击添加描述"
@@ -159,18 +159,8 @@
     $(document).ready(function () {
         var $table = $('#table-dict');
         $table.DataTable({
-//            "order"             : [1, 'desc'],
             "ordering"    : false,
             "aLengthMenu" : [25, 50, 100],
-//            "stateSave"         : true,
-//            "stateSaveCallback" : function (settings, data) {
-//                window.localStorage.setItem("datatable", JSON.stringify(data));
-//            },
-//            "stateLoadCallback" : function (settings) {
-//                var data = JSON.parse(window.localStorage.getItem("datatable"));
-//                if (data) data.start = 0;
-//                return data;
-//            }
         });
 
         $('.description input').change(function () {
@@ -210,12 +200,6 @@
             });
         });
 
-        $('.table-container').on('click', '.expand', function () {
-            $('#' + $(this).data('display')).toggle();
-        });
-        $('#delete-log').click(function () {
-            return confirm('Are you sure?');
-        });
     });
 </script>
 </body>
