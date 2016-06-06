@@ -19,7 +19,7 @@ class SyncCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Display an inspiring quote';
+    protected $description = '同步数据表数据到数据字典';
 
     /**
      * Execute the console command.
