@@ -16,13 +16,15 @@ class DictController extends Controller
         $tables = DbTable::orderBy('name', 'asc')->get();
 
         $tableId = Request::has('table_id') ? Request::input('table_id') : ( $tables->first() ? $tables->first()->id : 0 );
+        /** @var DbTable $currentTable */
+        $currentTable = DbTable::find($tableId);
         // Get All Columns By TableId
-        $columns = DbColumn::whereTableId($tableId)->get();
+        $columns = $currentTable->columns;
 
-        return view('LarevelDbDict::index')->withTables($tables)->withColumns($columns);
+        return view('LarevelDbDict::index')->withTables($tables)->withColumns($columns)->withCurrentTable($currentTable);
     }
 
-    public function update($column_id)
+    public function updateColumn($column_id)
     {
         /** @var DbColumn $column */
         $column = DbColumn::find($column_id);
@@ -34,5 +36,28 @@ class DictController extends Controller
         $column->update([ 'description' => Request::input('description') ]);
 
         return $column;
+    }
+
+    public function updateTable($table_id)
+    {
+        /** @var DbTable $table */
+        $table = DbTable::find($table_id);
+
+        if (empty( $table )) {
+            return [ ];
+        }
+
+        $table->update([ 'description' => Request::input('description') ]);
+
+        return $table;
+    }
+
+    public function postDictSync()
+    {
+        \Artisan::call('db:dict-sync');
+
+        return [
+            'success' => true
+        ];
     }
 }

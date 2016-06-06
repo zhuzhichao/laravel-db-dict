@@ -55,9 +55,18 @@
             padding-right: 5px;
             width: 100%;
             height: 100%;
+            border: none;
         }
 
-        .description input.read-only {
+        #table-dict .table-description {
+            padding: 0;
+        }
+
+        .table-description input {
+            padding-left: 5px;
+            padding-right: 5px;
+            width: 300px;
+            height: 100%;
             border: none;
         }
     </style>
@@ -70,7 +79,10 @@
             <p class="text-muted"><i>by zhuzhichao</i></p>
             <div class="list-group">
                 @foreach($tables as $table)
-                    <a href="?table_id={{ $table->id }}" class="list-group-item">
+                    <a href="?table_id={{ $table->id }}"
+                       class="list-group-item {{ $current_table->id == $table->id ? 'llv-active' : '' }}"
+                       title="{{ $table->description }}"
+                    >
                         {{$table->name}}
                     </a>
                 @endforeach
@@ -83,6 +95,17 @@
                     Log file >50M, please download it.
                 </div>
             @else
+                <div>
+                    <h2>{{ $current_table->name }}
+                        <small class="table-description">
+                            <input data-table_id="{{ $current_table->id }}"
+                                   placeholder="添加描述"
+                                   value="{{ $current_table->description }}">
+                            <button class="pull-right btn btn-info" id="sync-db"><i class="glyphicon glyphicon-refresh"></i> 同步</button>
+                        </small>
+                    </h2>
+                </div>
+                <hr>
                 <table id="table-dict" class="table table-bordered table-hover" style="font-size: 12px;">
                     <thead>
                     <tr>
@@ -112,7 +135,8 @@
                             <td>{{ $column->created_at }}</td>
                             <td>{{ $column->updated_at }}</td>
                             <td class="description">
-                                <input class="read-only" type="text" data-column_id="{{ $column->id }}"
+                                <input type="text" data-column_id="{{ $column->id }}"
+                                       placeholder="点击添加描述"
                                        value="{{ $column->description }}">
                             </td>
 
@@ -135,17 +159,18 @@
     $(document).ready(function () {
         var $table = $('#table-dict');
         $table.DataTable({
-            "order"             : [1, 'desc'],
-            "aLengthMenu"       : [25, 50, 100],
-            "stateSave"         : true,
-            "stateSaveCallback" : function (settings, data) {
-                window.localStorage.setItem("datatable", JSON.stringify(data));
-            },
-            "stateLoadCallback" : function (settings) {
-                var data = JSON.parse(window.localStorage.getItem("datatable"));
-                if (data) data.start = 0;
-                return data;
-            }
+//            "order"             : [1, 'desc'],
+            "ordering"    : false,
+            "aLengthMenu" : [25, 50, 100],
+//            "stateSave"         : true,
+//            "stateSaveCallback" : function (settings, data) {
+//                window.localStorage.setItem("datatable", JSON.stringify(data));
+//            },
+//            "stateLoadCallback" : function (settings) {
+//                var data = JSON.parse(window.localStorage.getItem("datatable"));
+//                if (data) data.start = 0;
+//                return data;
+//            }
         });
 
         $('.description input').change(function () {
@@ -160,6 +185,29 @@
             if (event.keyCode == 13) {
                 $(this).blur();
             }
+        });
+
+        $('.table-description input').change(function () {
+            $.post('{{ route('db-dict::index') }}/table/' + $(this).data('table_id'), {
+                _method     : 'PUT',
+                _token      : '{{ csrf_token() }}',
+                description : $(this).val()
+            }, function (result) {
+                console.log(result);
+            });
+        }).keyup(function (event) {
+            if (event.keyCode == 13) {
+                $(this).blur();
+            }
+        });
+
+        $('#sync-db').click(function() {
+            $.post('{{ route('db-dict::db-dict-sync') }}', {
+                _token      : '{{ csrf_token() }}',
+                description : $(this).val()
+            }, function (result) {
+                location.reload();
+            });
         });
 
         $('.table-container').on('click', '.expand', function () {
