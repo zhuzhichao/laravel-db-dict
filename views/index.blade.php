@@ -161,7 +161,7 @@
         var $table = $('#table-dict');
         $table.DataTable({
             "ordering"    : false,
-            "aLengthMenu" : [25, 50, 100],
+            "aLengthMenu" : [25, 50, 100]
         });
 
         $table.on('change', '.description input', function () {
@@ -172,10 +172,6 @@
             }, function (result) {
                 console.log(result);
             });
-        }).keyup(function (event) {
-            if (event.keyCode == 13) {
-                $(this).blur();
-            }
         });
 
         $(document).on('change', '.table-description input', function () {
@@ -186,7 +182,9 @@
             }, function (result) {
                 console.log(result);
             });
-        }).keyup(function (event) {
+        });
+
+        $(document).on('keyup', '.table-description input, .description input', function (event) {
             if (event.keyCode == 13) {
                 $(this).blur();
             }
