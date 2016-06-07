@@ -155,6 +155,7 @@
 <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js"></script>
 <script>
     $(document).ready(function () {
         var $table = $('#table-dict');
@@ -177,7 +178,7 @@
             }
         });
 
-        $('.table-description input').change(function () {
+        $table.on('change', '.table-description input', function () {
             $.post('{{ route('db-dict::index') }}/table/' + $(this).data('table_id'), {
                 _method     : 'PUT',
                 _token      : '{{ csrf_token() }}',
@@ -200,6 +201,8 @@
             });
         });
 
+//        var bar = new ProgressBar.Line('.list-group-item', {easing: 'easeInOut'});
+//        bar.animate(1);
     });
 </script>
 </body>
