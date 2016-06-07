@@ -164,7 +164,7 @@
             "aLengthMenu" : [25, 50, 100],
         });
 
-        $('.description input').change(function () {
+        $table.on('change', '.description input', function () {
             $.post('{{ route('db-dict::index') }}/column/' + $(this).data('column_id'), {
                 _method     : 'PUT',
                 _token      : '{{ csrf_token() }}',
@@ -178,7 +178,7 @@
             }
         });
 
-        $table.on('change', '.table-description input', function () {
+        $(document).on('change', '.table-description input', function () {
             $.post('{{ route('db-dict::index') }}/table/' + $(this).data('table_id'), {
                 _method     : 'PUT',
                 _token      : '{{ csrf_token() }}',
