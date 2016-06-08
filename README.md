@@ -29,7 +29,7 @@ Version: alpha ; Developing...
 
 ## Demo
 
-![laravel-db-dict-demo](http://7xkxib.com1.z0.glb.clouddn.com/laravel-db-dict-demo.png)
+![laravel-db-dict-demo](http://7xkxib.com1.z0.glb.clouddn.com/laravel-db-dict-demo-2.png)
 
 ## Installation
 composer require zhuzhichao/laravel-db-dict
