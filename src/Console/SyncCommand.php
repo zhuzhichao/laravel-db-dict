@@ -7,6 +7,7 @@ use Zhuzhichao\LaravelDbDict\Models\DbTable;
 
 class SyncCommand extends Command
 {
+
     /**
      * The name and signature of the console command.
      *
@@ -21,6 +22,14 @@ class SyncCommand extends Command
      */
     protected $description = '同步数据表数据到数据字典';
 
+    private $dbName;
+
+    public function __construct()
+    {
+        $this->dbName = DB::getDatabaseName();
+        parent::__construct();
+    }
+
     /**
      * Execute the console command.
      *
@@ -28,8 +37,14 @@ class SyncCommand extends Command
      */
     public function handle()
     {
-        $databaseName = DB::getDatabaseName();
 
+        $tables = $this->syncTables();
+        $this->syncColumns($tables);
+
+    }
+
+    public function syncTables()
+    {
         $tableSql = "select table_name from (select t.table_schema as db_name,   
 t.table_name,   
 (case when t.table_type = 'BASE TABLE' then 'table' 
@@ -48,7 +63,7 @@ inner join information_schema.columns as c
 on t.table_name = c.table_name  
 and t.table_schema = c.table_schema 
 where t.table_type in('base table', 'view') 
-and t.table_schema = '{$databaseName}'  
+and t.table_schema = '{$this->dbName}'  
 order by t.table_schema, t.table_name, c.ordinal_position) as all_columns group by table_name";
 
         $tableNames = array_pluck((array) DB::select($tableSql), 'table_name');
@@ -68,7 +83,12 @@ order by t.table_schema, t.table_name, c.ordinal_position) as all_columns group 
         DbTable::whereNotIn('name', $tableNames)->delete();
         $this->info('表同步完成');
 
-        $tables = DbTable::all();
+        return DbTable::all();
+    }
+
+    private function syncColumns($tables)
+    {
+        /** @var DbTable $table */
         foreach ($tables as $table) {
             $columnSql = "select t.table_schema as db_name,   
 t.table_name,   
@@ -88,7 +108,7 @@ inner join information_schema.columns as c
 on t.table_name = c.table_name  
 and t.table_schema = c.table_schema 
 where t.table_type in('base table', 'view') 
-and t.table_schema = '{$databaseName}'
+and t.table_schema = '{$this->dbName}'
 and t.table_name = '{$table->name}'
 order by t.table_schema, t.table_name, c.ordinal_position";
 

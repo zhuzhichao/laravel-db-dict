@@ -45,6 +45,9 @@
             background-color: #f5f5f5;
             border-color: #777;
         }
+        #table-dict {
+            font-size: 12px;
+        }
 
         #table-dict .description {
             padding: 0;
@@ -101,12 +104,14 @@
                             <input data-table_id="{{ $current_table->id }}"
                                    placeholder="添加描述"
                                    value="{{ $current_table->description }}">
-                            <button class="pull-right btn btn-info" id="sync-db"><i class="glyphicon glyphicon-refresh"></i> 同步</button>
+                            <button class="pull-right btn btn-info" id="sync-db"><i
+                                        class="glyphicon glyphicon-refresh"></i> 同步
+                            </button>
                         </small>
                     </h2>
                 </div>
                 <hr>
-                <table id="table-dict" class="table table-bordered table-hover" style="font-size: 12px;">
+                <table id="table-dict" class="table table-bordered table-hover">
                     <thead>
                     <tr>
                         <th>字段名</th>
@@ -116,8 +121,6 @@
                         <th>是否为空</th>
                         <th>其他</th>
                         <th>字段备注</th>
-                        {{--<th>同步</th>--}}
-                        {{--<th>更新</th>--}}
                         <th>描述</th>
                     </tr>
                     </thead>
@@ -132,8 +135,6 @@
                             <td>{!! $column->is_nullable !!}</td>
                             <td>{{ $column->extra }}</td>
                             <td>{{ $column->comment }}</td>
-{{--                            <td>{{ $column->created_at }}</td>--}}
-                            {{--<td>{{ $column->updated_at }}</td>--}}
                             <td class="description">
                                 <input type="text" data-column_id="{{ $column->id }}"
                                        placeholder="点击添加描述"
@@ -155,7 +156,8 @@
 <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js"></script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js"></script>
 <script>
     $(document).ready(function () {
         var $table = $('#table-dict');
@@ -190,7 +192,7 @@
             }
         });
 
-        $('#sync-db').click(function() {
+        $('#sync-db').click(function () {
             $.post('{{ route('db-dict::db-dict-sync') }}', {
                 _token      : '{{ csrf_token() }}',
                 description : $(this).val()
