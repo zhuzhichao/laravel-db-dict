@@ -67,6 +67,8 @@ and t.table_schema = '{$this->dbName}'
 order by t.table_schema, t.table_name, c.ordinal_position) as all_columns group by table_name";
 
         $tableNames = array_pluck((array) DB::select($tableSql), 'table_name');
+        $this->info("共有".count($tableNames)."张表, 将同步表信息");
+        $bar = $this->output->createProgressBar(count($tableNames));
         foreach ($tableNames as $tableName) {
             $tableBuilder = DbTable::withTrashed()->where('name', $tableName);
             if ($tableBuilder->exists()) {
@@ -79,15 +81,17 @@ order by t.table_schema, t.table_name, c.ordinal_position) as all_columns group 
                     'name' => $tableName
                 ]);
             }
+            $bar->advance();
         }
         DbTable::whereNotIn('name', $tableNames)->delete();
-        $this->info('表同步完成');
+        $bar->finish();
 
         return DbTable::all();
     }
 
     private function syncColumns($tables)
     {
+        $bar = $this->output->createProgressBar(count($tables));
         /** @var DbTable $table */
         foreach ($tables as $table) {
             $columnSql = "select t.table_schema as db_name,   
@@ -113,7 +117,6 @@ and t.table_name = '{$table->name}'
 order by t.table_schema, t.table_name, c.ordinal_position";
 
             $columnInfos = DB::select($columnSql);
-
             foreach ($columnInfos as $columnInfo) {
                 $columnBuilder = $table->columns()->withTrashed()->where('name', $columnInfo->column_name);
                 if ($columnBuilder->exists()) {
@@ -146,8 +149,8 @@ order by t.table_schema, t.table_name, c.ordinal_position";
             $columnNames = array_pluck($columnInfos, 'column_name');
 
             $table->columns()->whereNotIn('name', $columnNames)->delete();
+            $bar->advance();
         }
-
-        $this->info('字段同步完成');
+        $bar->finish();
     }
 }
