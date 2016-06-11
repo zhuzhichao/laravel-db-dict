@@ -3,7 +3,7 @@
 use Zhuzhichao\LaravelDbDict\Controllers\DictController;
 
 Route::group([
-    'prefix' => 'laravel-db-dict',
+    'prefix'     => 'laravel-db-dict',
     'middleware' => 'web',
 ], function () {
     Route::get('/', [

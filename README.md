@@ -1,7 +1,7 @@
 Laravel 5 DB Dict
 ======================
 
-Version: alpha ; Developing...
+Version: 0.1.7
 ----
 数据字典 for laravel。
 
@@ -23,25 +23,31 @@ Version: alpha ; Developing...
 
 ##Todos
 
-2. 命令行工具的代码内容优化和进度条显示
 5. 提供显示删除的字段和表
 6. 提供英文版本和多语言支持
+7. 表分类显示
 
 ## Demo
 
 ![laravel-db-dict-demo](http://7xkxib.com1.z0.glb.clouddn.com/laravel-db-dict-demo-2.png)
 
 ## Installation
+
+### 安装
 composer require zhuzhichao/laravel-db-dict
 
+### 配置
 add follow line into config/app.php>providers>array
 
+```
 Zhuzhichao\LaravelDbDict\LavavelDbDictProvider::class
+```
 
 php artisan vendor:publish
 
 php artisan migrate
 
+### 同步数据字典
 php artisan db:dict-sync
 
 ## Usage

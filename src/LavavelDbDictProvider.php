@@ -6,6 +6,7 @@ use Zhuzhichao\LaravelDbDict\Console\SyncCommand;
 
 class LavavelDbDictProvider extends ServiceProvider
 {
+
     /**
      * 在注册后进行服务的启动。
      *
@@ -19,7 +20,7 @@ class LavavelDbDictProvider extends ServiceProvider
             __DIR__.'/../database/migrations/' => database_path('migrations')
         ], 'migrations');
 
-        if (! $this->app->routesAreCached()) {
+        if ( ! $this->app->routesAreCached()) {
             require __DIR__.'/routes.php';
         }
     }
@@ -31,11 +32,10 @@ class LavavelDbDictProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['command.laravel-db-dict.sync'] = $this->app->share(function ($app)
-        {
+        $this->app['command.laravel-db-dict.sync'] = $this->app->share(function ($app) {
             return new SyncCommand($app['config']);
         });
-        $this->commands(['command.laravel-db-dict.sync']);
+        $this->commands([ 'command.laravel-db-dict.sync' ]);
     }
 
     /**
