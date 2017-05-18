@@ -4,7 +4,6 @@ use Zhuzhichao\LaravelDbDict\Controllers\DictController;
 
 Route::group([
     'prefix'     => 'laravel-db-dict',
-    'middleware' => 'web',
 ], function () {
     Route::get('/', [
         'uses' => DictController::class.'@index',

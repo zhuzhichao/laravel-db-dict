@@ -20,6 +20,8 @@ class LavavelDbDictProvider extends ServiceProvider
             __DIR__.'/../database/migrations/' => database_path('migrations')
         ], 'migrations');
 
+        $this->commands([ SyncCommand::class ]);
+
         if ( ! $this->app->routesAreCached()) {
             require __DIR__.'/routes.php';
         }
@@ -32,10 +34,6 @@ class LavavelDbDictProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['command.laravel-db-dict.sync'] = $this->app->share(function ($app) {
-            return new SyncCommand($app['config']);
-        });
-        $this->commands([ 'command.laravel-db-dict.sync' ]);
     }
 
     /**
