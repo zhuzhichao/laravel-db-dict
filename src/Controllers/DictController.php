@@ -1,4 +1,5 @@
 <?php
+
 namespace Zhuzhichao\LaravelDbDict\Controllers;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -19,7 +20,7 @@ class DictController extends Controller
         /** @var DbTable $currentTable */
         $currentTable = DbTable::find($tableId);
         // Get All Columns By TableId
-        $columns = $currentTable->columns;
+        $columns = $currentTable ? $currentTable->columns : [];
 
         return view('LarevelDbDict::index')->withTables($tables)->withColumns($columns)->withCurrentTable($currentTable);
     }
@@ -29,8 +30,8 @@ class DictController extends Controller
         /** @var DbColumn $column */
         $column = DbColumn::find($column_id);
 
-        if (empty( $column )) {
-            return [ ];
+        if (empty($column)) {
+            return [];
         }
 
         $column->update([ 'description' => Request::input('description') ]);
@@ -43,8 +44,8 @@ class DictController extends Controller
         /** @var DbTable $table */
         $table = DbTable::find($table_id);
 
-        if (empty( $table )) {
-            return [ ];
+        if (empty($table)) {
+            return [];
         }
 
         $table->update([ 'description' => Request::input('description') ]);
